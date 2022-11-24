@@ -42,6 +42,7 @@ public class HttpServer : IDisposable
         {
             while (true)
             {
+                
                 if (_activeListeners >= MaxListeners)
                 {
                     Thread.Sleep(100);
