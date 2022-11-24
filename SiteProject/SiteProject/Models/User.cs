@@ -11,15 +11,15 @@ public class User
     [ValueColumn("Password")]
     public int Password { get; set; }
     [ValueColumn("Role")]
-    public Role Role { get; set; }
-    public User(string login, int password, Role role)
+    public string Role { get; set; }
+    public User(string login, int password, string role)
     {
         Role = role;
         Login = login;
         Password = password;
     }
     [DbRecordCtor]
-    public User(int id, string login, int password, Role role)
+    public User(int id, string login, int password, string role)
     {
         Id = id;
         Login = login;

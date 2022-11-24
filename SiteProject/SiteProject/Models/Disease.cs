@@ -6,7 +6,7 @@ namespace SiteProject.Models;
 public class Disease
 {
     [DbRecordCtor]
-    public Disease(int id, int specId, string name, string description)
+    public Disease(int id, string name, int specId, string description)
     {
         Id = id;
         Spec = DaoFactory.GetDao<MedicSpecialization>().SelectById(specId);

@@ -15,8 +15,7 @@ public class Drug
         UseInstruction = useInstruction;
         Price = price;
     }
-
-    [DbRecordCtor]
+    
     public Drug(string name, MedicSpecialization spec, string impactDesc, string useInstruction, int price)
     {
         Name = name;
