@@ -6,16 +6,24 @@ namespace SiteProject.Models;
 public class Patient
 {
     [DbRecordCtor]
-    public Patient(int id, string fullName, string age, int bloodType, int diseaseId, int caringDoctorId)
+    public Patient(int id, string fullName, string age, string bloodType, int diseaseId, int caringDoctorId)
     {
         Id = id;
         FullName = fullName;
         Age = age;
-        BloodType = bloodType;
+        BloodType = BloodTypeHandler.GetBloodType(bloodType);
         Disease = DaoFactory.GetDao<Disease>().SelectById(diseaseId);
         CaringDoctor = DaoFactory.GetDao<MedicPersonal>().SelectById(caringDoctorId);
     }
-    public Patient(string fullName, string age, int bloodType, Disease disease, MedicPersonal caringDoctor)
+    public Patient(string fullName, string age, string bloodType, Disease disease, MedicPersonal caringDoctor)
+    {
+        FullName = fullName;
+        Age = age;
+        BloodType = BloodTypeHandler.GetBloodType(bloodType);
+        Disease = disease;
+        CaringDoctor = caringDoctor;
+    }
+    public Patient(string fullName, string age, BloodType bloodType, Disease disease, MedicPersonal caringDoctor)
     {
         FullName = fullName;
         Age = age;
@@ -31,7 +39,7 @@ public class Patient
     [ValueColumn("Age")]
     public string Age { get; set; }
     [ValueColumn("BloodType")]
-    public int BloodType { get; set; }
+    public BloodType BloodType { get; set; }
     [ValueColumn("Disease")]
     public Disease Disease { get; set; }
     [ValueColumn("CaringDoctor")]

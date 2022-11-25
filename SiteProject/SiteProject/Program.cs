@@ -4,5 +4,6 @@ using SiteProject.Models;
 using SiteProject.ORM;
 
 DaoFactory.ConnectionString = "Server=(localdb)\\MSSQLLocalDB;Initial Catalog = SiteDb;";
-var d = DaoFactory.GetDao<MedicSpecialization>().SelectById(2);
-Console.WriteLine(d.SpecName);
+DaoFactory.GetDao<User>().Insert(new User("Login1", "Password1".GetHashCode(), Role.Client));
+var user = DaoFactory.GetDao<User>().SelectById(1);
+Console.WriteLine(user.Role);
