@@ -1,17 +1,18 @@
-﻿using SiteProject.Attributes;
-using SiteProject.DataTransfering;
+﻿using SiteProject.ActionResults;
+using SiteProject.Attributes;
 using SiteProject.Models;
 using SiteProject.ORM;
 
 namespace SiteProject.Controllers;
 
 [ApiController("/login")]
-public class LoginController
+public static class LoginController
 {
-    private static Dao<User> userDao = DaoFactory.GetDao<User>();
+    private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
+
     private static LoginValidationResult ValidateLogin(string login, string password)
     {
-        var user = userDao.SelectBy("Login", login).FirstOrDefault();
+        var user = UserDao.SelectBy("Login", login).FirstOrDefault();
         if (user == null) return new LoginValidationResult("Invalid login");
         if (!IsValidPassword(user, password)) return new LoginValidationResult("InvalidPassword");
         return new LoginValidationResult(user.Role);

@@ -5,36 +5,28 @@ namespace SiteProject.Models;
 
 public class RecipeRequest
 {
-    [Id("Id")]
-    public int Id { get; set; }
-    [ValueColumn("PatientId")]
-    public Patient Patient { get; set; }
-    [ValueColumn("DiseaseId")]
-    public Disease Disease { get; set; }
-    [ValueColumn("DoctorId")]
-    public Doctor Doctor { get; set; }
+    [Id("Id")] public int Id { get; set; }
+    [ValueColumn("PatientId")] public Patient Patient { get; set; }
+    [ValueColumn("DiseaseId")] public Disease Disease { get; set; }
 
     [DbRecordCtor]
-    public RecipeRequest(int id, int patientId, int diseaseId, int doctorId)
+    public RecipeRequest(int id, int patientId, int diseaseId)
     {
         Id = id;
-        Patient = DaoFactory.GetDao<Patient>().SelectById(patientId);
-        Disease = DaoFactory.GetDao<Disease>().SelectById(diseaseId);
-        Doctor = DaoFactory.GetDao<Doctor>().SelectById(doctorId);
+        Patient = DaoFactory.GetDao<Patient>().SelectNotNullById(patientId);
+        Disease = DaoFactory.GetDao<Disease>().SelectNotNullById(diseaseId);
     }
 
     public RecipeRequest(int patientId, int diseaseId)
     {
-        Patient = DaoFactory.GetDao<Patient>().SelectById(patientId);
-        Disease = DaoFactory.GetDao<Disease>().SelectById(diseaseId);
-        Doctor = Patient.CaringDoctor;
+        Patient = DaoFactory.GetDao<Patient>().SelectNotNullById(patientId);
+        Disease = DaoFactory.GetDao<Disease>().SelectNotNullById(diseaseId);
     }
-    
+
     public RecipeRequest(Patient patient, Disease disease)
     {
         Patient = patient;
         Disease = disease;
-        Doctor = Patient.CaringDoctor;
     }
 
     public override string ToString()

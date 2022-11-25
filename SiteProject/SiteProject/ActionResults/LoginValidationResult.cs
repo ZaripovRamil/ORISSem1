@@ -1,6 +1,6 @@
 ﻿using SiteProject.Models;
 
-namespace SiteProject.DataTransfering;
+namespace SiteProject.ActionResults;
 
 public class LoginValidationResult
 {
@@ -9,13 +9,13 @@ public class LoginValidationResult
         IsValid = false;
         Message = message;
     }
-    
+
     public LoginValidationResult(Role role)
     {
         IsValid = false;
         UserRole = role;
     }
-    
+
 
     public bool IsValid { get; set; }
     public string Message { get; set; }

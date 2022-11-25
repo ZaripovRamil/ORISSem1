@@ -9,11 +9,11 @@ public class Disease
     public Disease(int id, string name, int specId, string description)
     {
         Id = id;
-        Spec = DaoFactory.GetDao<MedicSpecialization>().SelectById(specId);
+        Spec = DaoFactory.GetDao<MedicSpecialization>().SelectNotNullById(specId);
         Name = name;
         Description = description;
     }
-    
+
     public Disease(MedicSpecialization spec, string name, string description)
     {
         Spec = spec;
@@ -21,14 +21,10 @@ public class Disease
         Description = description;
     }
 
-    [Id("Id")]
-    public int Id { get; set; }
-    [ValueColumn("SpecId")]
-    public MedicSpecialization Spec { get; set; }
-    [ValueColumn("Name")]
-    public string Name { get; set; }
-    [ValueColumn("Description")]
-    public string Description { get; set; }
+    [Id("Id")] public int Id { get; set; }
+    [ValueColumn("SpecId")] public MedicSpecialization Spec { get; set; }
+    [ValueColumn("Name")] public string Name { get; set; }
+    [ValueColumn("Description")] public string Description { get; set; }
 
     public override string ToString()
     {

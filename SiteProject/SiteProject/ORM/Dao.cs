@@ -3,6 +3,7 @@
 public class Dao<T>
 {
     private MyOrm Orm { get; }
+
     public Dao(string connectionString)
     {
         Orm = new MyOrm(connectionString);
@@ -11,6 +12,8 @@ public class Dao<T>
     public IEnumerable<T> Select() => Orm.Select<T>();
 
     public T? SelectById(int id) => Orm.Select<T>("Id", id).FirstOrDefault();
+
+    public T SelectNotNullById(int id) => Orm.Select<T>("Id", id).First();
 
     public IEnumerable<T> SelectBy(string column, object value) => Orm.Select<T>(column, value);
 

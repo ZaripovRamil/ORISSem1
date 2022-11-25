@@ -1,12 +1,12 @@
-﻿using SiteProject.DataTransfering;
+﻿using SiteProject.ActionResults;
 using SiteProject.Models;
 using SiteProject.ORM;
 
 namespace SiteProject.Controllers;
 
-public class RegistrationController
+public static class RegistrationController
 {
-    public static RegistrationResult ValidateRegistration(string login, string password, Role role)
+    private static RegistrationResult ValidateRegistration(string login, string password, Role role)
     {
         var dao = DaoFactory.GetDao<User>();
         var user = dao.SelectBy("Login", login).FirstOrDefault();

@@ -2,6 +2,7 @@
 
 public enum BloodType
 {
+    Invalid = -1,
     O = 0,
     A = 1,
     B = 2,
@@ -17,6 +18,6 @@ public static class BloodTypeHandler
             "A" => BloodType.A,
             "B" => BloodType.B,
             "AB" => BloodType.AB,
-            _ => throw new ArgumentOutOfRangeException(nameof(bloodType), bloodType, null)
+            _ => BloodType.Invalid
         };
 }

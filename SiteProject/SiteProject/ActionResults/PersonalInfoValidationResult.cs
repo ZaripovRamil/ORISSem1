@@ -1,14 +1,14 @@
 ﻿namespace SiteProject.ActionResults;
 
-public class RegistrationResult
+public class PersonalInfoValidationResult
 {
-    public RegistrationResult(string message)
+    public PersonalInfoValidationResult(string message)
     {
         IsValid = false;
         Message = message;
     }
 
-    public RegistrationResult(int id)
+    public PersonalInfoValidationResult(int id)
     {
         IsValid = false;
         UserId = id;

@@ -10,12 +10,12 @@ public class Drug
     {
         Id = id;
         Name = name;
-        Spec = DaoFactory.GetDao<MedicSpecialization>().SelectById(specId);
+        Spec = DaoFactory.GetDao<MedicSpecialization>().SelectNotNullById(specId);
         ImpactDesc = impactDesc;
         UseInstruction = useInstruction;
         Price = price;
     }
-    
+
     public Drug(string name, MedicSpecialization spec, string impactDesc, string useInstruction, int price)
     {
         Name = name;
@@ -31,6 +31,7 @@ public class Drug
     [ValueColumn("ImpactDesc")] public string ImpactDesc { get; set; }
     [ValueColumn("Instruction")] public string UseInstruction { get; set; }
     [ValueColumn("Price")] public int Price { get; set; }
+
     public override string ToString()
     {
         return Id.ToString();
