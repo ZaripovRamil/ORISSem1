@@ -1,4 +1,4 @@
-﻿namespace HttpServerTask.Attributes;
+﻿namespace SiteProject.Attributes;
 
 public abstract class Column:Attribute
 {

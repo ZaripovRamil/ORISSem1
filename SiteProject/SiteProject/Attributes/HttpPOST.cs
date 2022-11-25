@@ -1,4 +1,4 @@
-﻿namespace HttpServerTask.Attributes;
+﻿namespace SiteProject.Attributes;
 
 class HttpPOST : HttpRequest
 {

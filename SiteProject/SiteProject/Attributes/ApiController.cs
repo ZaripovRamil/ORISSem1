@@ -1,4 +1,4 @@
-﻿namespace HttpServerTask.Attributes
+﻿namespace SiteProject.Attributes
 {
     [AttributeUsage(AttributeTargets.Class)]
     internal class ApiController : Attribute

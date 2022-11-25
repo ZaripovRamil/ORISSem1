@@ -1,4 +1,4 @@
-﻿namespace HttpServerTask.Attributes
+﻿namespace SiteProject.Attributes
 {
     internal abstract class HttpRequest : Attribute
     {

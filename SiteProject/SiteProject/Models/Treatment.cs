@@ -1,4 +1,4 @@
-﻿using HttpServerTask.Attributes;
+﻿using SiteProject.Attributes;
 using SiteProject.ORM;
 
 namespace SiteProject.Models;
@@ -10,12 +10,12 @@ public class Treatment
     {
         Id = id;
         Patient = DaoFactory.GetDao<Patient>().SelectById(patientId);
-        Doctor = DaoFactory.GetDao<MedicPersonal>().SelectById(doctorId);
+        Doctor = DaoFactory.GetDao<Doctor>().SelectById(doctorId);
         Drug = DaoFactory.GetDao<Drug>().SelectById(drugId);
     }
 
     [Id("Id")] public int Id { get; set; }
     [ValueColumn("PatientId")] public Patient Patient { get; set; }
-    [ValueColumn("DoctorId")] public MedicPersonal Doctor { get; set; }
+    [ValueColumn("DoctorId")] public Doctor Doctor { get; set; }
     [ValueColumn("DrugId")] public Drug Drug { get; set; }
 }

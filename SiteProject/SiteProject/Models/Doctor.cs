@@ -1,33 +1,26 @@
-﻿using HttpServerTask.Attributes;
+﻿using SiteProject.Attributes;
 using SiteProject.ORM;
 
 namespace SiteProject.Models;
 
-public class MedicPersonal
+public class Doctor
 {
     [DbRecordCtor]
-    public MedicPersonal(int id, string fullName, int specId, int experienceYears)
+    public Doctor(int id, string fullName, int specId, int experienceYears)
     {
         Id = id;
         FullName = fullName;
         Spec = DaoFactory.GetDao<MedicSpecialization>().SelectById(specId);
         ExperienceYears = experienceYears;
     }
-    
-    public MedicPersonal(string fullName, MedicSpecialization spec, int experienceYears)
-    {
-        FullName = fullName;
-        Spec = spec;
-        ExperienceYears = experienceYears;
-    }
 
-    [Id("Id")]
+    [ValueColumn("Id")]
     public int Id { get; set; }
     [ValueColumn("FullName")]
     public string FullName { get; set; }
     [ValueColumn("SpecId")]
     public MedicSpecialization Spec { get; set; }
-    [ValueColumn("ExpYears")]
+    [ValueColumn("ExperienceYears")]
     public int ExperienceYears { get; set; }
     public override string ToString()
     {

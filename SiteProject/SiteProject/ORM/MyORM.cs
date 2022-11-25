@@ -1,7 +1,7 @@
 ﻿using System.Data;
 using System.Data.SqlClient;
 using System.Reflection;
-using HttpServerTask.Attributes;
+using SiteProject.Attributes;
 
 namespace SiteProject.ORM;
 
@@ -44,7 +44,7 @@ internal class MyOrm
         var query =
             $"INSERT INTO {table} " +
             $"({string.Join(", ", lineData.Keys)}) VALUES ('{string.Join("', '", lineData.Values)}')";
-
+        Console.WriteLine(query);
         using var connection = new SqlConnection(_connectionString);
         RunNonReturningQuery(query, connection);
     }
