@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SiteProject", "SiteProject\SiteProject.csproj", "{6EB6D63F-200C-4FD0-B933-FA1D3F59E487}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinySupporter", "TinySupporter\TinySupporter.csproj", "{E4CD04C2-8BC3-4695-BD9E-07B3D5051B46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{6EB6D63F-200C-4FD0-B933-FA1D3F59E487}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6EB6D63F-200C-4FD0-B933-FA1D3F59E487}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6EB6D63F-200C-4FD0-B933-FA1D3F59E487}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4CD04C2-8BC3-4695-BD9E-07B3D5051B46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4CD04C2-8BC3-4695-BD9E-07B3D5051B46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4CD04C2-8BC3-4695-BD9E-07B3D5051B46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4CD04C2-8BC3-4695-BD9E-07B3D5051B46}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

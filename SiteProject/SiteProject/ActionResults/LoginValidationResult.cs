@@ -12,7 +12,7 @@ public class LoginValidationResult
 
     public LoginValidationResult(Role role)
     {
-        IsValid = false;
+        IsValid = true;
         UserRole = role;
     }
 

@@ -1,9 +1,11 @@
 ﻿using SiteProject.ActionResults;
+using SiteProject.Attributes;
 using SiteProject.Models;
 using SiteProject.ORM;
 
 namespace SiteProject.Controllers;
 
+[ApiController("info")]
 public static class PersonalInfoController
 {
     private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();

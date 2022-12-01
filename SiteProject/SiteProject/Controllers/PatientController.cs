@@ -1,9 +1,11 @@
 ﻿using SiteProject.ActionResults;
+using SiteProject.Attributes;
 using SiteProject.Models;
 using SiteProject.ORM;
 
 namespace SiteProject.Controllers;
 
+[ApiController("Patient")]
 public static class PatientController
 {
     private static readonly Dao<Patient> PatientDao = DaoFactory.GetDao<Patient>();

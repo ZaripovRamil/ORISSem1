@@ -12,8 +12,8 @@ public static class RoleHandler
     public static Role GetRole(string role)
         => role switch
         {
-            "Medic" => Role.Doctor,
-            "Client" => Role.Patient,
+            "Doctor" => Role.Doctor,
+            "Patient" => Role.Patient,
             _ => Role.Invalid
         };
 }

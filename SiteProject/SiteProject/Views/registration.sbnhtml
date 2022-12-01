@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form class = "register-form" method = "POST" action = "register">
+                            <div class = "text-field">
+                                <header>Enter login</header>
+                                <input class = "text-input" type = "text" name = "login" value = "">
+                            </div>
+                            <div class = "text-field" >
+                                <header>Enter password</header>
+                                <input class = "text-input" type = "text" name = "password" value = "">
+                            </div>
+                            <span>{{message}}</span>
+                            <div class = "checkbox-field">
+                                <svg alt = "checkbox" version="1.1" id="base" xmlns="http://www.w3.org/2000/svg" class="check" x="0px" y="0px" viewBox="0 0 256 256" stroke-width="35" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><polyline fill="none" points="49.5,147.75 95,210.75 206.5,45.25 "></polyline></svg>
+                                <div class = "checkbox-label">Remember me</div>
+                            </div>
+                            <div class = "signin-button-container">
+                                <button class="submit-button" type = "submit">Enter</button>
+                            </div>
+                        </form>
+</body>
+</html>

@@ -3,35 +3,17 @@ using SiteProject.ORM;
 
 namespace SiteProject.Models;
 
-public class Patient
+public class Patient:Person
 {
     [DbRecordCtor]
-    public Patient(int id, string fullName, int age, string bloodType)
+    public Patient(int id, string fullName, int age, string bloodType):base(id, fullName)
     {
-        Id = id;
-        FullName = fullName;
         Age = age;
         BloodType = BloodTypeHandler.GetBloodType(bloodType);
     }
 
-    public Patient(int id, string fullName, int age, BloodType bloodType)
+    public Patient(int id, string fullName, int age, BloodType bloodType):base(id, fullName)
     {
-        Id = id;
-        FullName = fullName;
-        Age = age;
-        BloodType = bloodType;
-    }
-
-    public Patient(string fullName, int age, string bloodType)
-    {
-        FullName = fullName;
-        Age = age;
-        BloodType = BloodTypeHandler.GetBloodType(bloodType);
-    }
-
-    public Patient(string fullName, int age, BloodType bloodType)
-    {
-        FullName = fullName;
         Age = age;
         BloodType = bloodType;
     }
