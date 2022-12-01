@@ -73,8 +73,8 @@ public class ServerResponse
         var controllerName = request.Url.Segments[1].Replace("/", "");
         var cookie = request.Cookies
             .FirstOrDefault(cookie => cookie.Name == "SessionId");
-        var userId = cookie != null ? SessionManager.GetUserId(cookie.Value).ToString() : "0";
-        var strParams = QueryParser
+        var userId = cookie != null ? CookieManager.GetUserIdFromCookie(cookie) : "0";
+            var strParams = QueryParser
             .Parse(sr.ReadToEnd())
             .Select(kv => kv.Value)
             .Append(userId)

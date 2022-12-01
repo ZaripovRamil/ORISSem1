@@ -14,7 +14,7 @@ namespace SiteProject.Controllers;
 public static class LoginController
 {
     private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
-
+    private static readonly Dao<MyCookie> CookieDao = DaoFactory.GetDao<MyCookie>();
     private static LoginValidationResult ValidateLogin(string login, string password)
     {
         var user = UserDao.SelectBy("Login", login).FirstOrDefault();
@@ -24,13 +24,14 @@ public static class LoginController
     }
 
     [HttpPOST]
-    public static RequestResult LoginAttempt(string login, string password)
+    public static RequestResult LoginAttempt(string login, string password, string remember)
     {
         var res = ValidateLogin(login, password);
         if (res.IsValid)
         {
+            var cookie = CookieManager.ProvideCookie(login, remember == "true");
             return new RequestResult("http://localhost:6083/" + res.UserRole)
-                {Cookies = new CookieCollection{CookieManager.GetCookie(login)}};
+                {Cookies = new CookieCollection{cookie}};
         }
 
         return new RequestResult("http://localhost:6083/login/" + res.Message);
@@ -50,7 +51,7 @@ public static class LoginController
 
     private static RequestResult OpenView(string message, int userId)
     {
-        if (userId != 0) RoleController.RedirectToCorrectRole(userId);
+        if (userId != 0) return RoleController.RedirectToCorrectRole(userId);
         var template = Template.Parse(File.ReadAllText("Views/login.sbnhtml"));
         var res = Encoding.UTF8.GetBytes(template.Render(new {message = message}));
         return new RequestResult(200, "text/html", res);

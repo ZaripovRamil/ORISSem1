@@ -7,10 +7,21 @@ namespace SiteProject.Services;
 public static class CookieManager
 {
     private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
-    public static Cookie GetCookie(string login)
+    private static readonly Dao<MyCookie> CookieDao = DaoFactory.GetDao<MyCookie>();
+
+    public static Cookie ProvideCookie(string login, bool save)
     {
-        var userId = UserDao.SelectBy("Login", login).First().Id;
+        var userId = UserDao.SelectBy("Login", login).First().Id.ToString();
         var sessionId = SessionManager.CreateSessionId(userId);
+        if (save)
+            CookieDao.Insert(new MyCookie(sessionId, userId));
         return new Cookie("SessionId", sessionId);
+    }
+
+    public static string GetUserIdFromCookie(Cookie cookie)
+    {
+        var cookieInDb = CookieDao.SelectBy("Name", cookie.Value).FirstOrDefault();
+        if (cookieInDb != null) return cookieInDb.UserId;
+        return SessionManager.GetUserId(cookie.Value);
     }
 }
