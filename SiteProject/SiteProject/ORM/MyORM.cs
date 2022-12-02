@@ -49,7 +49,7 @@ internal class MyOrm
         RunNonReturningQuery(query, connection);
     }
 
-    public int Update<T>(T oldT, T newT)
+    public int Update<T>(T newT)
     {
         var idColumn = typeof(T).GetProperties().FirstOrDefault(p => Attribute.IsDefined(p, typeof(Id)));
         if (idColumn is null) throw new Exception("no id column in model");
@@ -61,7 +61,7 @@ internal class MyOrm
                 p => p.GetValue(newT)?.ToString());
         //My IDE hates this line but it works just normal
         var query =
-            $"UPDATE {table} SET {string.Join(", ", lineData.Select(pair => $"{pair.Key} = '{pair.Value}'"))} WHERE {((Id) idColumn.GetCustomAttribute(typeof(Id))!).ColumnName} = '{idColumn.GetValue(oldT)}'";
+            $"UPDATE {table} SET {string.Join(", ", lineData.Select(pair => $"{pair.Key} = '{pair.Value}'"))} WHERE {((Id) idColumn.GetCustomAttribute(typeof(Id))!).ColumnName} = '{idColumn.GetValue(newT)}'";
         Console.WriteLine(query); //I left it here for demonstration and debug purposes, should be removed later
         using var connection = new SqlConnection(_connectionString);
         return RunNonReturningQuery(query, connection);

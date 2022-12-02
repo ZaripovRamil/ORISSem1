@@ -19,7 +19,7 @@ public class Dao<T>
 
     public void Insert(T account) => Orm.Insert(account);
 
-    public void Update(T old, T newAcc) => Orm.Update(old, newAcc);
+    public void Update(T newAcc) => Orm.Update(newAcc);
 
     public void DeleteById(int id) => Orm.Delete<T>("Id", id);
 }
