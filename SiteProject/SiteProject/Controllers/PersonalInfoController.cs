@@ -38,7 +38,10 @@ public static class PersonalInfoController
         if (!int.TryParse(ageString, out var age)) return new PersonalInfoValidationResult("Invalid age");
         if (bloodType == BloodType.Invalid)
             return new PersonalInfoValidationResult(" Invalid blood type");
-        PatientDao.Insert(new Patient(userId, name, age, bloodType));
+        var patient = new Patient(userId, name, age, bloodType);
+        if(PatientDao.SelectById(userId)!=null)
+            PatientDao.Update(patient);
+        else PatientDao.Insert(patient);
         return new PersonalInfoValidationResult(userId);
     }
 
@@ -53,7 +56,10 @@ public static class PersonalInfoController
             return new PersonalInfoValidationResult("Invalid specialization");
         if (!int.TryParse(expYearsString, out var expYears))
             return new PersonalInfoValidationResult("Invalid experience");
-        DoctorDao.Insert(new Doctor(userId, name, spec.Id, expYears));
+        var doctor = new Doctor(userId, name, spec.Id, expYears);
+        if(DoctorDao.SelectById(userId)!=null)
+            DoctorDao.Update(doctor);
+        else DoctorDao.Insert(doctor);
         return new PersonalInfoValidationResult(userId);
     }
 
