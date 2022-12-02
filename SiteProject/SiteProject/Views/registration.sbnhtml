@@ -14,10 +14,16 @@
                                 <header>Enter password</header>
                                 <input class = "text-input" type = "text" name = "password" value = "">
                             </div>
-                            <span>{{message}}</span>
+                            <label for="role">I'm a
+                            <select id = "role", name ="role">
+                                <option value="Patient">patient</option>
+                                <option value="Doctor">doctor</option>
+                            </select>
+                            <div>
+                                <span>{{message}}</span>
+                            </div>
                             <div class = "checkbox-field">
-                                <svg alt = "checkbox" version="1.1" id="base" xmlns="http://www.w3.org/2000/svg" class="check" x="0px" y="0px" viewBox="0 0 256 256" stroke-width="35" stroke="#fff" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10"><polyline fill="none" points="49.5,147.75 95,210.75 206.5,45.25 "></polyline></svg>
-                                <div class = "checkbox-label">Remember me</div>
+                                 <input type = "checkbox" name = "remember" value = "true">Remember me</div>
                             </div>
                             <div class = "signin-button-container">
                                 <button class="submit-button" type = "submit">Enter</button>

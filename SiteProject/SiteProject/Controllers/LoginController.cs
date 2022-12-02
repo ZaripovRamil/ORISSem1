@@ -17,9 +17,10 @@ public static class LoginController
     private static readonly Dao<MyCookie> CookieDao = DaoFactory.GetDao<MyCookie>();
     private static LoginValidationResult ValidateLogin(string login, string password)
     {
+        if (login == "") return new LoginValidationResult("Enter login");
         var user = UserDao.SelectBy("Login", login).FirstOrDefault();
-        if (user == null) return new LoginValidationResult("invalidlogin");
-        if (!IsValidPassword(user, password)) return new LoginValidationResult("invalidpassword");
+        if (user == null) return new LoginValidationResult("There is no user with such login");
+        if (!IsValidPassword(user, password)) return new LoginValidationResult("Wrong password");
         return new LoginValidationResult(user.Role);
     }
 
@@ -27,23 +28,11 @@ public static class LoginController
     public static RequestResult LoginAttempt(string login, string password, string remember)
     {
         var res = ValidateLogin(login, password);
-        if (res.IsValid)
-        {
-            var cookie = CookieManager.ProvideCookie(login, remember == "true");
-            return new RequestResult("http://localhost:6083/" + res.UserRole)
-                {Cookies = new CookieCollection{cookie}};
-        }
-
-        return new RequestResult("http://localhost:6083/login/" + res.Message);
+        if (!res.IsValid) return OpenView(res.Message, 0);
+        var cookie = CookieManager.ProvideCookie(login, remember == "true");
+        return new RequestResult("http://localhost:6083/" + res.UserRole)
+            {Cookies = new CookieCollection{cookie}};
     }
-
-    [HttpGET("invalidlogin")]
-    public static RequestResult OpenInvLoginView(int userId)
-        => OpenView("Invalid login", userId);
-
-    [HttpGET("invalidpassword")] //TODO: remove this, use JS
-    public static RequestResult OpenInvPasswordView(int userId)
-        => OpenView("Invalid password", userId);
 
     [HttpGET]
     public static RequestResult OpenView(int userId)

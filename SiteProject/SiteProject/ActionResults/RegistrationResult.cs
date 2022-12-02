@@ -10,7 +10,7 @@ public class RegistrationResult
 
     public RegistrationResult(int id)
     {
-        IsValid = false;
+        IsValid = true;
         UserId = id;
     }
 

@@ -36,19 +36,12 @@ public class ServerResponse
             return;
         }
 
-        if (TryHandleController(request, out RequestResult result))
-        {
-            Status = (HttpStatusCode) result.StatusCode;
-            ContentType = result.ContentType;
-            RedirectionTarget = result.RedirectionTarget;
-            Buffer = result.Buffer;
-            Cookies = result.Cookies;
-            return;
-        }
-
-        Status = HttpStatusCode.NotFound;
-        ContentType = "text/plain";
-        Buffer = Encoding.UTF8.GetBytes($"File {path} not found");
+        TryHandleController(request, out RequestResult result);
+        Status = (HttpStatusCode) result.StatusCode;
+        ContentType = result.ContentType;
+        RedirectionTarget = result.RedirectionTarget;
+        Buffer = result.Buffer;
+        Cookies = result.Cookies;
     }
 
     private static byte[] GetFile(string filePath)
@@ -74,7 +67,7 @@ public class ServerResponse
         var cookie = request.Cookies
             .FirstOrDefault(cookie => cookie.Name == "SessionId");
         var userId = cookie != null ? CookieManager.GetUserIdFromCookie(cookie) : "0";
-            var strParams = QueryParser
+        var strParams = QueryParser
             .Parse(sr.ReadToEnd())
             .Select(kv => kv.Value)
             .Append(userId)
