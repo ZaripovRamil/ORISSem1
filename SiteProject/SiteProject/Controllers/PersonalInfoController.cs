@@ -1,4 +1,6 @@
-﻿using SiteProject.ActionResults;
+﻿using System.Text;
+using Scriban;
+using SiteProject.ActionResults;
 using SiteProject.Attributes;
 using SiteProject.Models;
 using SiteProject.ORM;
@@ -26,12 +28,12 @@ public static class PersonalInfoController
         };
     }
 
-    private static PersonalInfoValidationResult ValidatePatient(int userId, string[] info)
+    private static PersonalInfoValidationResult ValidatePatient(int userId, params string[] info)
     {
         if (info.Length != 3) return new PersonalInfoValidationResult("Invalid arguments");
         var name = info[0];
-        var ageString = info[1];
-        var bloodType = BloodTypeHandler.GetBloodType(info[2]);
+        var ageString = info[2];
+        var bloodType = BloodTypeHandler.GetBloodType(info[1]);
         if (name == string.Empty) return new PersonalInfoValidationResult("Empty name");
         if (!int.TryParse(ageString, out var age)) return new PersonalInfoValidationResult("Invalid age");
         if (bloodType == BloodType.Invalid)
@@ -40,7 +42,7 @@ public static class PersonalInfoController
         return new PersonalInfoValidationResult(userId);
     }
 
-    private static PersonalInfoValidationResult ValidateDoctor(int userId, string[] info)
+    private static PersonalInfoValidationResult ValidateDoctor(int userId, params string[] info)
     {
         if (info.Length != 3) return new PersonalInfoValidationResult("Invalid arguments");
         var name = info[0];
@@ -53,5 +55,36 @@ public static class PersonalInfoController
             return new PersonalInfoValidationResult("Invalid experience");
         DoctorDao.Insert(new Doctor(userId, name, spec.Id, expYears));
         return new PersonalInfoValidationResult(userId);
+    }
+
+    [HttpPOST("doctorinfo")]
+    public static RequestResult DoctorInfoInputAttempt(string name, string role, string expYearsString, int userId)
+    {
+        var res = Validate(userId, name, role, expYearsString);
+        if(!res.IsValid)return OpenView(res.Message, userId);
+        return new RequestResult("http://localhost:6083/" + RoleController.GetRole(userId));
+    }
+    
+    [HttpPOST("patientinfo")]
+    public static RequestResult PatientInfoInputAttempt(string name, string bloodType, string ageString, int userId)
+    {
+        var res = Validate(userId, name, bloodType, ageString);
+        if(!res.IsValid)return OpenView(res.Message, userId);
+        return new RequestResult("http://localhost:6083/" + RoleController.GetRole(userId));
+    }
+    [HttpGET]
+    public static RequestResult OpenView(int userId)
+        => OpenView("", userId);
+
+    private static RequestResult OpenView(string message, int userId)
+    {
+        if (userId == 0) return new RequestResult("localhost:6083/login");
+        var role = RoleController.GetRole(userId);
+        var bloodTypes = BloodTypeHandler.GetTypes();
+        var specs = MsDao.Select().Select(ms => ms.SpecName);
+        var template = Template.Parse(File.ReadAllText("Views/info.sbnhtml"));
+        var res = Encoding.UTF8.GetBytes(template.Render(
+            new {message = message, role = role.ToString(), bloodtypes = bloodTypes, specs = specs}));
+        return new RequestResult(200, "text/html", res);
     }
 }

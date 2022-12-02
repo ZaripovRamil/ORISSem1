@@ -9,7 +9,7 @@ public abstract class RoleController
 {
     protected static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
     protected abstract bool IsCorrectRole(int userId);
-    protected static Role GetRole(int userId) => UserDao.SelectNotNullById(userId).Role;
+    public static Role GetRole(int userId) => UserDao.SelectNotNullById(userId).Role;
     protected abstract bool IsInfoFilled(int userId);
     
     public virtual RequestResult GetUserMenu(int userId)

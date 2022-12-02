@@ -17,13 +17,8 @@ public class Patient:Person
         Age = age;
         BloodType = bloodType;
     }
-
-    [ValueColumn("Id")] public int Id { get; set; }
-    [ValueColumn("FullName")] public string FullName { get; set; }
     [ValueColumn("Age")] public int Age { get; set; }
     [ValueColumn("BloodType")] public BloodType BloodType { get; set; }
-
-    [ValueColumn("CaringDoctor")]
     public override string ToString()
     {
         return Id.ToString();

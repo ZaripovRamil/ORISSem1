@@ -10,7 +10,7 @@ public class PersonalInfoValidationResult
 
     public PersonalInfoValidationResult(int id)
     {
-        IsValid = false;
+        IsValid = true;
         UserId = id;
     }
 

@@ -45,7 +45,7 @@ public class DoctorController:RoleController
     protected override RequestResult OpenView(int userId)
     {
         var template = Template.Parse(File.ReadAllText("Views/doctor.sbnhtml"));
-        var res = Encoding.UTF8.GetBytes(template.Render(new {message = userId}));
+        var res = Encoding.UTF8.GetBytes(template.Render(new {id = userId.ToString()}));
         return new RequestResult(200, "text/html", res);
     }
 

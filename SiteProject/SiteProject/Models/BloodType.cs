@@ -20,4 +20,6 @@ public static class BloodTypeHandler
             "AB" => BloodType.AB,
             _ => BloodType.Invalid
         };
+
+    public static string[] GetTypes() => new[] {"O", "A", "B", "AB"};
 }

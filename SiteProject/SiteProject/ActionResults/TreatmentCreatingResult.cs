@@ -4,7 +4,7 @@ public class TreatmentCreatingResult
 {
     public bool IsValid { get; set; }
     public string Message { get; set; }
-    public int RecipeRequestId;
+    public int TreatmentId;
 
     public TreatmentCreatingResult(string message)
     {
@@ -15,6 +15,6 @@ public class TreatmentCreatingResult
     public TreatmentCreatingResult(int id)
     {
         IsValid = true;
-        RecipeRequestId = id;
+        TreatmentId = id;
     }
 }
