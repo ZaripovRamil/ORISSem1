@@ -8,7 +8,7 @@ using SiteProject.ORM;
 namespace SiteProject.Controllers;
 
 [ApiController("info")]
-public static class PersonalInfoController
+public class PersonalInfoController:Controller
 {
     private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
     private static readonly Dao<Patient> PatientDao = DaoFactory.GetDao<Patient>();
@@ -64,7 +64,7 @@ public static class PersonalInfoController
     }
 
     [HttpPOST("doctorinfo")]
-    public static RequestResult DoctorInfoInputAttempt(string name, string role, string expYearsString, int userId)
+    public RequestResult DoctorInfoInputAttempt(string name, string role, string expYearsString, int userId)
     {
         var res = Validate(userId, name, role, expYearsString);
         if(!res.IsValid)return OpenView(res.Message, userId);
@@ -72,23 +72,23 @@ public static class PersonalInfoController
     }
     
     [HttpPOST("patientinfo")]
-    public static RequestResult PatientInfoInputAttempt(string name, string bloodType, string ageString, int userId)
+    public RequestResult PatientInfoInputAttempt(string name, string bloodType, string ageString, int userId)
     {
         var res = Validate(userId, name, bloodType, ageString);
         if(!res.IsValid)return OpenView(res.Message, userId);
         return new RequestResult("http://localhost:6083/" + RoleController.GetRole(userId));
     }
     [HttpGET]
-    public static RequestResult OpenView(int userId)
+    public RequestResult OpenView(int userId)
         => OpenView("", userId);
 
-    private static RequestResult OpenView(string message, int userId)
+    protected override RequestResult OpenView(string message, int userId)
     {
         if (userId == 0) return new RequestResult("localhost:6083/login");
         var role = RoleController.GetRole(userId);
         var bloodTypes = BloodTypeHandler.GetTypes();
         var specs = MsDao.Select().Select(ms => ms.SpecName);
-        var template = Template.Parse(File.ReadAllText("Views/info.sbnhtml"));
+        var template = Template.Parse(File.ReadAllText("Views/info.html"));
         var res = Encoding.UTF8.GetBytes(template.Render(
             new {message = message, role = role.ToString(), bloodtypes = bloodTypes, specs = specs}));
         return new RequestResult(200, "text/html", res);

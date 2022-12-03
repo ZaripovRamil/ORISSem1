@@ -1,4 +1,5 @@
-﻿using SiteProject.Attributes;
+﻿using Scriban;
+using SiteProject.Attributes;
 using SiteProject.ORM;
 
 namespace SiteProject.Models;
@@ -35,5 +36,11 @@ public class Drug
     public override string ToString()
     {
         return Id.ToString();
+    }
+
+    public static string GenerateHtml(Template drugTemplate, Drug drug)
+    {
+        return drugTemplate.Render(new
+            {name = drug.Name, price = drug.Price, use = drug.UseInstruction, impact = drug.ImpactDesc});
     }
 }

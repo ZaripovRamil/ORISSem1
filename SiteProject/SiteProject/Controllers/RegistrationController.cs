@@ -10,7 +10,7 @@ using SiteProject.Services;
 namespace SiteProject.Controllers;
 
 [ApiController("register")]
-public static class RegistrationController
+public class RegistrationController:Controller
 {
     private static RegistrationResult ValidateRegistration(string login, string password, Role role)
     {
@@ -24,11 +24,11 @@ public static class RegistrationController
     }
     
     [HttpGET]
-    public static RequestResult OpenView(int userId)
+    public RequestResult OpenView(int userId)
         => OpenView("", userId);
     
     [HttpPOST]
-    public static RequestResult RegistrationAttempt(string login, string password, string role, string remember)
+    public RequestResult RegistrationAttempt(string login, string password, string role, string remember)
     {
         var res = ValidateRegistration(login, password, RoleHandler.GetRole(role));
         if (!res.IsValid) return OpenView(res.Message, 0);
@@ -37,11 +37,11 @@ public static class RegistrationController
             {Cookies = new CookieCollection{cookie}};
     }
 
-    
-    private static RequestResult OpenView(string message, int userId)
+
+    protected override RequestResult OpenView(string message, int userId)
     {
         if (userId != 0) return RoleController.RedirectToCorrectRole(userId);
-        var template = Template.Parse(File.ReadAllText("Views/registration.sbnhtml"));
+        var template = Template.Parse(File.ReadAllText("Views/registration.html"));
         var res = Encoding.UTF8.GetBytes(template.Render(new {message = message}));
         return new RequestResult(200, "text/html", res);
     }

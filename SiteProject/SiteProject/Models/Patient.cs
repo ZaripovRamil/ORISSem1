@@ -1,4 +1,5 @@
-﻿using SiteProject.Attributes;
+﻿using Scriban;
+using SiteProject.Attributes;
 using SiteProject.ORM;
 
 namespace SiteProject.Models;
@@ -22,5 +23,16 @@ public class Patient:Person
     public override string ToString()
     {
         return Id.ToString();
+    }
+
+    public static string GenerateHtml(Template patientTemplate, Patient patient)
+    {
+        return patientTemplate.Render(
+            new
+            {
+                patient_name = patient.FullName,
+                age = patient.Age,
+                bt = patient.BloodType
+            });
     }
 }

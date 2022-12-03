@@ -5,7 +5,7 @@ using SiteProject.ORM;
 
 namespace SiteProject.Controllers;
 
-public abstract class RoleController
+public abstract class RoleController:Controller
 {
     protected static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
     protected abstract bool IsCorrectRole(int userId);
@@ -29,6 +29,4 @@ public abstract class RoleController
     {
         return new RequestResult("http://localhost:6083/" + "info");
     }
-
-    protected abstract RequestResult OpenView(string message, int userId);
 }

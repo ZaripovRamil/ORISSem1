@@ -11,10 +11,10 @@ using SiteProject.Services;
 namespace SiteProject.Controllers;
 
 [ApiController("login")]
-public static class LoginController
+public class LoginController : Controller
 {
     private static readonly Dao<User> UserDao = DaoFactory.GetDao<User>();
-    private static readonly Dao<MyCookie> CookieDao = DaoFactory.GetDao<MyCookie>();
+
     private static LoginValidationResult ValidateLogin(string login, string password)
     {
         if (login == "") return new LoginValidationResult("Enter login");
@@ -25,23 +25,23 @@ public static class LoginController
     }
 
     [HttpPOST]
-    public static RequestResult LoginAttempt(string login, string password, string remember)
+    public RequestResult LoginAttempt(string login, string password, string remember)
     {
         var res = ValidateLogin(login, password);
         if (!res.IsValid) return OpenView(res.Message, 0);
         var cookie = CookieManager.ProvideCookie(login, remember == "true");
         return new RequestResult("http://localhost:6083/" + res.UserRole)
-            {Cookies = new CookieCollection{cookie}};
+            {Cookies = new CookieCollection {cookie}};
     }
 
     [HttpGET]
-    public static RequestResult OpenView(int userId)
+    public RequestResult OpenView(int userId)
         => OpenView("", userId);
 
-    private static RequestResult OpenView(string message, int userId)
+    protected override RequestResult OpenView(string message, int userId)
     {
         if (userId != 0) return RoleController.RedirectToCorrectRole(userId);
-        var template = Template.Parse(File.ReadAllText("Views/login.sbnhtml"));
+        var template = Template.Parse(File.ReadAllText("Views/login.html"));
         var res = Encoding.UTF8.GetBytes(template.Render(new {message = message}));
         return new RequestResult(200, "text/html", res);
     }

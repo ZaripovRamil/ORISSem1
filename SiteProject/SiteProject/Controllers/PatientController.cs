@@ -47,29 +47,47 @@ public class PatientController : RoleController
 
     protected override RequestResult OpenView(string message, int userId)
     {
-        var prTemplate = Template.Parse(File.ReadAllText("Views/prescription.sbnhtml"));
-        var prescriptionsHtmls =
-            PrDao
-                .SelectBy("PatientId", userId)
-                .Select(pr => (pr,
-                    PrescriptionDao
-                        .SelectBy("PrId", pr.Id)
-                        .FirstOrDefault()))
-                .Where(p => p.Item2 != null)
-                .Select(p => prTemplate.Render(
-                    new
-                    {
-                        prescription_id = p.Item2!.Id,
-                        patient_name = p.pr.Patient.FullName,
-                        disease=p.pr.Disease.Name,
-                        drug=p.Item2.Drug.Name,
-                        doctor_name = p.Item2.Doctor.FullName
-                    }));
-        var template = Template.Parse(File.ReadAllText("Views/patient.sbnhtml"));
+        var doctorTemplate = Template.Parse(File.ReadAllText("Views/doctor.html"));
+        var prTemplate = Template.Parse(File.ReadAllText("Views/prescription.html"));
+        var drugTemplate = Template.Parse(File.ReadAllText("Views/drug.html"));
+        var template = Template.Parse(File.ReadAllText("Views/patient_menu.html"));
         var diseases = DiseaseDao.Select().Select(d => d.Name);
-        var res = Encoding.UTF8.GetBytes(template.Render(
-            new {message = message, prescriptions = prescriptionsHtmls, diseases = diseases}));
+        var res = GenerateHtml(template, prTemplate, doctorTemplate, diseases, message, userId, drugTemplate);
         return new RequestResult(200, "text/html", res);
+    }
+
+    private static byte[] GenerateHtml(Template template, Template prTemplate, Template doctorTemplate,
+        IEnumerable<string> diseases, string message, int userId, Template drugTemplate)
+    {
+        return Encoding.UTF8.GetBytes(
+            template.Render(
+                new
+                {
+                    message = message,
+                    diseases = diseases,
+                    prescriptions = GeneratePrescriptions(prTemplate,doctorTemplate,userId, drugTemplate)
+                }));
+    }
+
+    private static IEnumerable<string> GeneratePrescriptions(Template prTemplate, Template doctorTemplate, int userId,
+        Template drugTemplate)
+    {
+        return PrDao
+            .SelectBy("PatientId", userId)
+            .Select(pr => (pr,
+                PrescriptionDao
+                    .SelectBy("PrId", pr.Id)
+                    .FirstOrDefault())
+            ).Where(p => p.Item2 != null)
+            .Select(p => prTemplate.Render(
+                new
+                {
+                    prescription_id = p.Item2!.Id,
+                    patient_name = p.pr.Patient.FullName,
+                    disease = p.pr.Disease.Name,
+                    drug_data = Drug.GenerateHtml(drugTemplate, p.Item2.Drug),
+                    doctor_data = Doctor.GenerateProfileHtml(doctorTemplate, p.Item2.Doctor)
+                }));
     }
 
     [HttpGET]

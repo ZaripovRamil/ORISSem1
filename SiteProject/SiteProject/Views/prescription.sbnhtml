@@ -1,7 +1,0 @@
-﻿<div class="prescription">
-<p>Prescription №{{prescription_id}}</p>
-<p>Patient: {{patient_name}}</p>
-<p>Target disease: {{disease}}</p>
-<p>Recommended drug: {{drug}}</p>
-<p>Attending doctor:{{doctor_name}}</p>
-</div>

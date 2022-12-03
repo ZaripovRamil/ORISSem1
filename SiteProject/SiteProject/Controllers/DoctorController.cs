@@ -48,28 +48,44 @@ public class DoctorController : RoleController
 
     protected override RequestResult OpenView(string message, int userId)
     {
-        var prTemplate = Template.Parse(File.ReadAllText("Views/prescription-request.sbnhtml"));
+        var patientTemplate = Template.Parse(File.ReadAllText("Views/patient.html"));
+        var prTemplate = Template.Parse(File.ReadAllText("Views/prescription-request.html"));
         var doctor = DoctorDao.SelectNotNullById(userId);
-        var drugs = DrugDao.Select().Select(d => d.Name);
-        var prHtmls =
-            PrDao
-                .Select()
-                .Where(pr => PrescriptionDao
-                    .SelectBy("PrId", pr.Id)
-                    .FirstOrDefault() == null)
-                .Where(pr => pr.Disease.Spec.Id == doctor.Spec.Id)
-                .Select(pr => prTemplate.Render(
-                    new
-                    {
-                        drugs=drugs,
-                        disease = pr.Disease.Name,
-                        request_id = pr.Id.ToString(),
-                        patient_name = pr.Patient.FullName
-                    }))
-                .ToArray();
-        var template = Template.Parse(File.ReadAllText("Views/doctor.sbnhtml"));
-        var res = Encoding.UTF8.GetBytes(template.Render(new {message = message, requests = prHtmls}));
+        var drugs = DrugDao.Select().Where(d=>d.Spec.Id==doctor.Spec.Id).Select(d => d.Name);
+        var template = Template.Parse(File.ReadAllText("Views/doctor_menu.html"));
+        var res = GenerateHtml(template, prTemplate, patientTemplate, doctor, drugs, message);
         return new RequestResult(200, "text/html", res);
+    }
+
+    private static byte[] GenerateHtml(Template template, Template prTemplate, Template patientTemplate, Doctor doctor,
+        IEnumerable<string> drugs, string message)
+    {
+        return Encoding.UTF8.GetBytes(template.Render(
+            new
+            {
+                message = message,
+                requests = GeneratePrescriptionRequests(prTemplate, patientTemplate, doctor, drugs)
+            }));
+    }
+
+    private static IEnumerable<string> GeneratePrescriptionRequests(Template prTemplate, Template patientTemplate,
+        Doctor doctor, IEnumerable<string> drugs)
+    {
+        return PrDao
+            .Select()
+            .Where(pr => PrescriptionDao
+                .SelectBy("PrId", pr.Id)
+                .FirstOrDefault() == null)
+            .Where(pr => pr.Disease.Spec.Id == doctor.Spec.Id)
+            .Select(pr => prTemplate.Render(
+                new
+                {
+                    drugs = drugs,
+                    disease = pr.Disease.Name,
+                    request_id = pr.Id.ToString(),
+                    patient_data = Patient.GenerateHtml(patientTemplate, pr.Patient)
+                }))
+            .ToArray();
     }
 
     [HttpGET]
