@@ -14,9 +14,10 @@ public abstract class RoleController
     
     public virtual RequestResult GetUserMenu(int userId)
     {
+        if (userId == 0) return new RequestResult("localhost:6083/login");
         if (!IsCorrectRole(userId)) return RedirectToCorrectRole(userId);
         if (!IsInfoFilled(userId)) return RedirectToFillingInfo();
-        return OpenView(userId);
+        return OpenView("", userId);
     }
 
     public static RequestResult RedirectToCorrectRole(int userId)
@@ -29,5 +30,5 @@ public abstract class RoleController
         return new RequestResult("http://localhost:6083/" + "info");
     }
 
-    protected abstract RequestResult OpenView(int userId);
+    protected abstract RequestResult OpenView(string message, int userId);
 }

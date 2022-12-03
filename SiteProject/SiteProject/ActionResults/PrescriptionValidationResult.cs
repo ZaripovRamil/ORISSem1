@@ -1,20 +1,20 @@
 ﻿namespace SiteProject.ActionResults;
 
-public class TreatmentCreatingResult
+public class PrescriptionValidationResult
 {
     public bool IsValid { get; set; }
     public string Message { get; set; }
-    public int TreatmentId;
+    public int PrescriptionId;
 
-    public TreatmentCreatingResult(string message)
+    public PrescriptionValidationResult(string message)
     {
         IsValid = false;
         Message = message;
     }
 
-    public TreatmentCreatingResult(int id)
+    public PrescriptionValidationResult(int id)
     {
         IsValid = true;
-        TreatmentId = id;
+        PrescriptionId = id;
     }
 }

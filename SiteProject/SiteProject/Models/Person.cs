@@ -10,6 +10,6 @@ public abstract class Person
         FullName = fullName;
     }
 
-    [ValueColumn("Id")] public int Id { get; set; }
+    [Id("Id")][ValueColumn("Id")] public int Id { get; set; }
     [ValueColumn("FullName")] public string FullName { get; set; }
 }

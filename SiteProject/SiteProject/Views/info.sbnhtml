@@ -30,7 +30,7 @@
 </form>
 {{else}}
 {{if role == "Patient"}}
-This is a patient info page
+<div class="form-holder">
 <form class = "send-info" method ="POST" action="info/patientinfo">
         <header>Please, fill next info</header>
         <div class = "text-field">
@@ -40,10 +40,9 @@ This is a patient info page
         <div>
         <header>Enter your blood type</header>
         <select id = "bloodType", name ="bloodType">
-             <option>O</option>
-             <option>A</option>
-             <option>B</option>
-             <option>AB</option>
+             {{for bt in bloodtypes}}
+             <option>{{bt}}</option>
+             {{end}}
         </select>
         </div>
         <div class = "text-field">
@@ -54,6 +53,7 @@ This is a patient info page
            <button class="submit-button" type = "submit">Enter</button>
        </div>
 </form>
+</div>
 {{end}}
 {{end}}
 <div>

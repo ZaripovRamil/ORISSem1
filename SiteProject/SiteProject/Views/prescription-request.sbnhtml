@@ -1,0 +1,11 @@
+﻿<div class="prescription-request">
+    <p>Prescription request №{{request_id}}</p>
+    <p>Patient: {{patient_name}}</p>
+    <p>Target disease: {{disease}}</p>
+    <input type="hidden" name="request-id" value={{request_id}}></input>
+    <select name="drug">
+        {{for drug in drugs}}
+        <option>{{drug}}</option>
+        {{end}}
+    </select>
+</div>

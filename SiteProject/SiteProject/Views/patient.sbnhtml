@@ -1,1 +1,27 @@
-﻿this is your future menu, patient {{id}}
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div class="form-holder">
+    <form class = "request-form" method="POST" action="Patient">
+        <header>You can request for a new prescription, just choose your disease!</header>
+        <select name="disease">
+            {{for disease in diseases}}
+            <option>{{disease}}</option>
+            {{end}}
+        </select>
+        <span>{{message}}</span>
+        <div class = "submit-button-container">
+                   <button class="submit-button" type = "submit">Enter</button>
+        </div>
+    </form>
+    </div>
+    <div class = "active-prescriptions">
+        {{for prescription in prescriptions}}
+        {{prescription}}
+        {{end}}
+    </div>
+</body>

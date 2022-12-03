@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
+<div class="form-holder">
 <form class = "register-form" method = "POST" action = "register">
                             <div class = "text-field">
                                 <header>Enter login</header>
@@ -28,6 +29,8 @@
                             <div class = "signin-button-container">
                                 <button class="submit-button" type = "submit">Enter</button>
                             </div>
+                            <a href = "localhost:6083/login">Already have an account? Login here</a>
                         </form>
+</div>
 </body>
 </html>

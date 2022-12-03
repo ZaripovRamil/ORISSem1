@@ -70,6 +70,7 @@ public class ServerResponse
         var strParams = QueryParser
             .Parse(sr.ReadToEnd())
             .Select(kv => kv.Value)
+            .Select(s=>s.Replace('+', ' '))
             .Append(userId)
             .ToArray();
 
